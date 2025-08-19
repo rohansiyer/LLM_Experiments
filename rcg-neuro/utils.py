@@ -2,14 +2,16 @@
 
 import logging
 import datetime
+import os
 
 def setup_logging(log_filename):
     """Configures a logger to write to both a file and the console."""
     logger = logging.getLogger('RCG_Neuro')
     logger.setLevel(logging.INFO)
     
-    # Create file handler
-    fh = logging.FileHandler(log_filename)
+    # Create file handler with logs directory
+    log_path = os.path.join('logs', log_filename)
+    fh = logging.FileHandler(log_path)
     fh.setLevel(logging.INFO)
     
     # Create console handler

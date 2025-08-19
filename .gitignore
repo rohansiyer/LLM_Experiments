@@ -1,1 +1,8 @@
 /Stuff
+
+# RCG-Neuro logs
+/rcg-neuro/logs/
+*.txt
+step2test.txt
+step3_rcg_detailed_*.txt
+step4_rcg_testing_*.txt
