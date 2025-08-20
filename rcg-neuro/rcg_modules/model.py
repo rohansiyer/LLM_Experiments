@@ -4,9 +4,9 @@ import torch
 import transformers
 import config
 
-def load_rcg_model():
+def load_rcg_model(logger):
     """Loads the specified language model with quantization and returns model, tokenizer, and pipeline."""
-    print("Loading model...")
+    logger.info("Loading model...")
     
     quantization_config = transformers.BitsAndBytesConfig(
         load_in_4bit=True,
@@ -29,5 +29,5 @@ def load_rcg_model():
         tokenizer=tokenizer,
     )
     
-    print("Model loaded successfully.")
+    logger.info("Model loaded successfully.")
     return model, tokenizer, text_generator

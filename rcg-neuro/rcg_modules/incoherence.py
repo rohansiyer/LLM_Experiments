@@ -6,9 +6,10 @@ from collections import Counter
 import math
 
 class IncoherenceMonitor:
-    def __init__(self, model):
+    def __init__(self, model, logger):
         """Initializes the monitor, sets up state, and registers hooks."""
         self.model = model
+        self.logger = logger
         # Internal state - no need to manage these from the outside!
         self.hooks = []
         self.attention_entropies = []
@@ -20,7 +21,7 @@ class IncoherenceMonitor:
     
     def _setup_hooks(self):
         """Register forward hooks for attention and MLP layers."""
-        print("Setting up model hooks...")
+        self.logger.info("Setting up model hooks...")
         
         attention_count = 0
         mlp_count = 0
@@ -36,7 +37,7 @@ class IncoherenceMonitor:
                 self.hooks.append(hook)
                 mlp_count += 1
         
-        print(f"Registered {len(self.hooks)} hooks: {attention_count} attention, {mlp_count} MLP")
+        self.logger.info(f"Registered {len(self.hooks)} hooks: {attention_count} attention, {mlp_count} MLP")
     
     def _attention_hook(self, layer_name):
         """Hook function to capture attention weights."""
@@ -82,7 +83,7 @@ class IncoherenceMonitor:
                 
             except Exception as e:
                 if len(self.attention_entropies) == 0 and 'debug_attn_error_printed' not in self.__dict__:
-                    print(f"Attention hook error in {layer_name}: {e}")
+                    self.logger.info(f"Attention hook error in {layer_name}: {e}")
                     self.debug_attn_error_printed = True
         return hook
     
@@ -118,8 +119,8 @@ class IncoherenceMonitor:
         
         total_l = (h_entropy + h_repetition + h_attention + h_dynamism)
         
-        print(f"Incoherence Components - Entropy: {h_entropy:.3f}, Repetition: {h_repetition:.3f}, "
-              f"Attention: {h_attention:.3f}, Dynamism: {h_dynamism:.3f} -> Total: {total_l:.3f}")
+        self.logger.info(f"Incoherence Components - Entropy: {h_entropy:.3f}, Repetition: {h_repetition:.3f}, "
+                        f"Attention: {h_attention:.3f}, Dynamism: {h_dynamism:.3f} -> Total: {total_l:.3f}")
         
         return total_l, {
             'h_entropy': h_entropy,
@@ -155,7 +156,7 @@ class IncoherenceMonitor:
             return total_entropy / num_tokens if num_tokens > 0 else 0.0
             
         except Exception as e:
-            print(f"H_entropy calculation from scores failed: {e}")
+            self.logger.info(f"H_entropy calculation from scores failed: {e}")
             return 0.0
     
     def calculate_h_repetition(self, response_text):

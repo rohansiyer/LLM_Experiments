@@ -106,6 +106,21 @@ Current system achievements:
 3. Configure HF_HOME_CACHE in config.py
 4. Run experiments with run_v0_9.py
 
+## 💻 System Requirements
+
+- **RAM**: 32 GB recommended
+  - Current implementation requires significant system RAM (approximately 26.6 GB) for the high-precision stress field
+  - Future versions will aim to optimize memory usage through float16 or sparse tensor implementations
+  - Memory usage primarily driven by stress tensor storage in CPU memory to preserve full RCG fidelity
+
+- **GPU**: CUDA-compatible GPU with at least 8GB VRAM
+  - Required for model inference and weight modifications
+  - VRAM usage optimized through smart parameter streaming
+
+- **Storage**: 10 GB minimum
+  - Model weights and cache
+  - Log files and experimental data
+
 ## 📝 Logging
 
 The system generates detailed logs for:

@@ -38,11 +38,11 @@ def run_experiment():
     logger.info("RCG-Neuro V0.9 Experiment Starting...")
     
     # Load the model using the factory function
-    model, tokenizer, _ = model_loader.load_rcg_model()
+    model, tokenizer, _ = model_loader.load_rcg_model(logger)
     
     # Create the "toolboxes"
     stress_field = StressField(model, logger)
-    incoherence_monitor = IncoherenceMonitor(model)
+    incoherence_monitor = IncoherenceMonitor(model, logger)
     collapse_executor = CollapseExecutor(model, stress_field)
     
     # Log experiment configuration

@@ -10,9 +10,9 @@ def setup_logging(log_filename):
     logger.setLevel(logging.INFO)
     
     # Create file handler with logs directory
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     log_path = os.path.join(base_dir, 'logs', log_filename)
-    fh = logging.FileHandler(log_path)
+    fh = logging.FileHandler(log_path, encoding='utf-8')
     fh.setLevel(logging.INFO)
     
     # Create console handler

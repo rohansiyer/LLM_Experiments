@@ -34,13 +34,11 @@ class StressField:
                 memory_mb = (l_field[name].numel() * 4) / (1024 * 1024)  # 4 bytes per float32
                 total_memory_mb += memory_mb
                 
-                logger.info(f"  Created stress tensor for '{name}': {shape} -> {memory_mb:.1f} MB (CPU)")
             else:
                 # For non-quantized params, we don't track stress
                 pass
         
-        logger.info(f"l-field created with {len(l_field)} matrices.")
-        logger.info(f"Total CPU memory for stress tensors: {total_memory_mb:.1f} MB")
+        logger.info(f"l-field created with {len(l_field)} tensors, total size: {total_memory_mb:.1f} MB")
         return l_field
 
     def apply(self, activation_traces, stress_score, logger):
