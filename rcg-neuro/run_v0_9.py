@@ -11,7 +11,7 @@ import config
 from rcg_modules import model as model_loader
 from rcg_modules.incoherence import IncoherenceMonitor
 from rcg_modules.stress import StressField
-from rcg_modules.collapse import CollapseExecutor
+from rcg_modules.collapse import CollapseExecutor  # Now using batched operations with VRAM management
 from utils import setup_logging, format_result_line
 
 def check_answer(response_text, correct_answer):
@@ -52,6 +52,9 @@ def run_experiment():
     logger.info(f"Model: {model.config._name_or_path}")
     logger.info(f"Stress storage: CPU (preserves full RCG fidelity)")
     logger.info(f"Collapse threshold: {config.COLLAPSE_THRESHOLD}")
+    logger.info(f"Snap threshold: {config.SNAP_THRESHOLD}")
+    logger.info(f"Snap candidate count: {config.SNAP_CANDIDATE_COUNT_THRESHOLD}")
+    logger.info(f"Weight transfer %: {config.DELTA_PERCENTAGE * 100:.1f}%")
     logger.info(f"Iterations planned: {config.NUM_ITERATIONS}")
     logger.info("=" * 50 + "\n")
     
@@ -125,7 +128,11 @@ def run_experiment():
         # Check for collapse
         collapse_candidates = stress_field.check_for_collapse(config.COLLAPSE_THRESHOLD, logger)
         if collapse_candidates:
-            collapse_msg = f"!!! COLLAPSE TRIGGERED !!! ({len(collapse_candidates)} matrices)"
+            unique_matrices = len(set(c['name'] for c in collapse_candidates))
+            unique_groups = len(set(c['group_key'] for c in collapse_candidates))
+            collapse_msg = (f"!!! COLLAPSE TRIGGERED !!! "
+                          f"({len(collapse_candidates)} stress points across {unique_matrices} matrices, "
+                          f"{unique_groups} target regions)")
             logger.info(collapse_msg)
             collapse_executor.execute(collapse_candidates, logger)
         

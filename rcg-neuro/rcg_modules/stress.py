@@ -145,30 +145,62 @@ class StressField:
         return sorted_stress
 
     def check_for_collapse(self, threshold, logger):
-        """Check if any weights exceed collapse threshold in CPU l_field."""
+        """Find all stress locations that exceed the collapse threshold in CPU l_field.
+        
+        This method now returns all stress points above threshold, enabling batched processing.
+        """
         collapse_candidates = []
         
         for name, stress_tensor in self.l_field.items():
             if stress_tensor.numel() > 0:
-                max_stress = torch.max(stress_tensor).item()
-                if max_stress >= threshold:
-                    # Find the exact location of maximum stress
-                    max_indices = torch.unravel_index(torch.argmax(stress_tensor), stress_tensor.shape)
-                    mean_stress = torch.mean(stress_tensor).item()
+                # Find all points where stress exceeds threshold
+                stress_mask = stress_tensor >= threshold
+                if not torch.any(stress_mask):
+                    continue
+                
+                # Get flattened indices of all points above threshold
+                flat_indices = torch.nonzero(stress_mask.flatten()).squeeze(1)
+                
+                # Process each stress point
+                for flat_idx in flat_indices:
+                    # Convert flat index back to 2D coordinates
+                    indices = torch.unravel_index(flat_idx, stress_tensor.shape)
+                    stress_value = stress_tensor[indices[0], indices[1]].item()
+                    
+                    # For MLP layers, group by target neuron (column index)
+                    # For attention layers, group by head index
+                    if 'mlp' in name:
+                        group_key = f"{name}_{indices[1]}"  # Group by neuron (column)
+                    else:  # attention layer
+                        num_heads = 32
+                        head_size = stress_tensor.shape[0] // num_heads
+                        head_idx = indices[0] // head_size
+                        group_key = f"{name}_{head_idx}"  # Group by attention head
                     
                     collapse_candidates.append({
                         'name': name,
-                        'max_stress': max_stress,
-                        'indices': max_indices,
-                        'mean_stress': mean_stress
+                        'group_key': group_key,
+                        'max_stress': stress_value,
+                        'indices': indices,
+                        'mean_stress': torch.mean(stress_tensor).item()
                     })
         
         if collapse_candidates:
-            collapse_candidates.sort(key=lambda x: x['max_stress'], reverse=True)
+            # Sort by stress value within each group
+            collapse_candidates.sort(key=lambda x: (x['group_key'], -x['max_stress']))
             
-            logger.info(f"\n🚨 COLLAPSE THRESHOLD EXCEEDED! {len(collapse_candidates)} matrices need attention:")
-            for i, candidate in enumerate(collapse_candidates[:3]):
-                logger.info(f"  {i+1}. {candidate['name']}: max_stress={candidate['max_stress']:.4f} at {candidate['indices']}")
+            # Log summary statistics
+            unique_matrices = len(set(c['name'] for c in collapse_candidates))
+            unique_groups = len(set(c['group_key'] for c in collapse_candidates))
+            logger.info(f"\n🚨 COLLAPSE THRESHOLD EXCEEDED!")
+            logger.info(f"Found {len(collapse_candidates)} stress points across {unique_matrices} matrices")
+            logger.info(f"Grouped into {unique_groups} target regions for batched processing")
+            
+            # Log top 3 highest stress points
+            top_3 = sorted(collapse_candidates, key=lambda x: x['max_stress'], reverse=True)[:3]
+            for i, candidate in enumerate(top_3):
+                logger.info(f"  {i+1}. {candidate['name']}: max_stress={candidate['max_stress']:.4f} "
+                          f"at {candidate['indices']} (group: {candidate['group_key']})")
         
         return collapse_candidates
 
