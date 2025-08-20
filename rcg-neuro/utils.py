@@ -10,7 +10,8 @@ def setup_logging(log_filename):
     logger.setLevel(logging.INFO)
     
     # Create file handler with logs directory
-    log_path = os.path.join('logs', log_filename)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    log_path = os.path.join(base_dir, 'logs', log_filename)
     fh = logging.FileHandler(log_path)
     fh.setLevel(logging.INFO)
     

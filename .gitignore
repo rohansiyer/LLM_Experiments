@@ -5,4 +5,5 @@
 *.txt
 step2test.txt
 step3_rcg_detailed_*.txt
-step4_rcg_testing_*.txt
+step4_rcg_testing_*.
+*.pyc
