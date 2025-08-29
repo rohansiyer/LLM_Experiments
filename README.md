@@ -1,8 +1,8 @@
 # RCG-Neuro: Neural Plasticity Framework for LLMs
 
-RCG-Neuro implements the Rejection-Collapse Governance (RCG) framework, enabling adaptive neuroplasticity in Large Language Models during inference. Based on theoretical work in discrete spacetime physics and universal optimization principles.
+RCG-Neuro enables adaptive neuroplasticity in Large Language Models during inference.
 
-## 🧠 Core Concept
+##  Core Concept
 
 RCG-Neuro treats neural pathways like a physical network under stress:
 - Incoherent computations create "stress" in specific pathways
@@ -10,7 +10,7 @@ RCG-Neuro treats neural pathways like a physical network under stress:
 - Conservative weight transfers occur during collapse events
 - Total weight magnitude is preserved (conservation law)
 
-## 🔬 Key Features
+##  Key Features
 
 ### Incoherence Detection
 - H_entropy: Token prediction uncertainty
@@ -30,7 +30,7 @@ RCG-Neuro treats neural pathways like a physical network under stress:
 - Strict preservation of total weight magnitude
 - Anatomically-aware stress application
 
-## 📊 Technical Details
+##  Technical Details
 
 ### Memory Efficiency
 - Stores only top 5% problematic MLP neuron indices
@@ -44,7 +44,7 @@ RCG-Neuro treats neural pathways like a physical network under stress:
 3. Requantize with strict conservation
 4. Reset local stress fields
 
-## 🚀 Version History
+##  Version History
 
 ### v0.9 (Current)
 - Full RCG framework implementation
@@ -55,11 +55,11 @@ RCG-Neuro treats neural pathways like a physical network under stress:
 
 ### v1.0 (Planned)
 - Softmax-based weighting system
-- SNAP threshold implementation
+- Snap threshold implementation
 - Enhanced stability measures
 - Additional performance optimizations
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 rcg-neuro/
@@ -74,7 +74,7 @@ rcg-neuro/
 └── utils.py             # Helper functions
 ```
 
-## 📈 Results
+##  Results
 
 Current system achievements:
 - Successfully identifies problematic neural pathways
@@ -82,14 +82,14 @@ Current system achievements:
 - Implements conservation-aware collapse mechanism
 - Maintains model stability during modifications
 
-## 🛠️ Setup
+##  Setup
 
 1. Clone the repository
 2. Install dependencies (requirements.txt coming soon)
 3. Configure HF_HOME_CACHE in config.py
 4. Run experiments with run_v0_9.py
 
-## 📝 Logging
+##  Logging
 
 The system generates detailed logs for:
 - Experimental results
@@ -100,15 +100,10 @@ The system generates detailed logs for:
 
 Logs are stored in `rcg-neuro/logs/` with timestamped filenames.
 
-## 🎯 Future Development
+##  Future Development
 
 1. Threshold calibration
-2. Implementation of SNAP mechanism
+2. Implementation of pruning mechanism
 3. Softmax-based weight system
 4. Enhanced stability measures
 5. Additional performance optimizations
-
-## 📚 References
-
-- RCG Framework Paper (discrete spacetime physics)
-- RCG Universal Theory Paper (optimization principles)
