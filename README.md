@@ -1,16 +1,16 @@
 # RCG-Neuro: Neural Plasticity Framework for LLMs
 
-RCG-Neuro implements the Rejection-Collapse Governance (RCG) framework, enabling adaptive neuroplasticity in Large Language Models during inference. Based on theoretical work in discrete spacetime physics and universal optimization principles.
+RCG-Neuro enables adaptive neuroplasticity in Large Language Models during inference.
 
-## 🧠 Core Concept
+##  Core Concept
 
 RCG-Neuro treats neural pathways like a physical network under stress:
 - Incoherent computations create "stress" in specific pathways
 - Stress accumulates until reaching collapse thresholds
-- Two-tier intervention system (reroute and snap)
+- Conservative weight transfers occur during collapse events
 - Total weight magnitude is preserved (conservation law)
 
-## 🔬 Key Features
+##  Key Features
 
 ### Incoherence Detection
 - H_entropy: Token prediction uncertainty
@@ -19,129 +19,91 @@ RCG-Neuro treats neural pathways like a physical network under stress:
 - H_dynamism: MLP activation variance
 
 ### Performance Optimizations
-- Smart VRAM management with CPU streaming
-- Batched parameter modifications
+- 99% memory reduction via sparse tracing
+- Index-based targeting for precise intervention
 - Efficient 4-bit weight modification during inference
 - No double forward passes
 
 ### Conservation-Aware Weight Modification
 - Live modification of 4-bit quantized weights
-- Batched reroute operations for efficiency
-- Radical snap mechanism for systemic issues
+- Conservative weight transfers between pathways
 - Strict preservation of total weight magnitude
+- Anatomically-aware stress application
 
-## 📊 Technical Details
+##  Technical Details
 
 ### Memory Efficiency
-- VRAMManager for optimized parameter handling
-- Parameters to be modified remain in VRAM
-- Other parameters streamed to CPU
-- Minimal VRAM-CPU transfers
+- Stores only top 5% problematic MLP neuron indices
+- Captures top 25% problematic attention head indices
+- Kilobytes instead of megabytes per trace
+- Real-time memory usage monitoring
 
 ### Weight Modification Process
-1. Group stress points by parameter and region
-2. Stream unaffected parameters to CPU
-3. Dequantize affected parameters in VRAM
-4. Process each group with appropriate intervention
-5. Reintegrate modified parameters
-6. Reset processed stress regions
+1. Dequantize target weight matrices
+2. Perform conservative weight transfers
+3. Requantize with strict conservation
+4. Reset local stress fields
 
-### Two-Tier Intervention System
-**Conservative Reroute**
-- For isolated stress points
-- Maintains anatomical grouping
-- Proportional weight redistribution
-
-**Radical Snap**
-- For systemic issues
-- Complete region reconfiguration
-- Stability-weighted redistribution
-
-## 🚀 Version History
+##  Version History
 
 ### v0.9 (Current)
-- Smart VRAM management system
-- Batched parameter operations
-- Two-tier intervention (reroute/snap)
-- Enhanced logging and monitoring
-- Comprehensive error handling
+- Full RCG framework implementation
+- Live weight modification capability
+- 4-bit quantization support
+- Performance optimizations
+- Comprehensive logging system
 
 ### v1.0 (Planned)
 - Softmax-based weighting system
-- Threshold calibration
+- Snap threshold implementation
 - Enhanced stability measures
 - Additional performance optimizations
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 rcg-neuro/
-├── rcg_modules/           
-│   ├── collapse/         # Weight modification system
-│   │   ├── __init__.py  # Module exports
-│   │   ├── executor.py  # Collapse operations
-│   │   └── vram_manager.py  # Memory management
-│   ├── incoherence.py   # Signal detection
-│   ├── model.py         # Model management
-│   └── stress.py        # Stress field system
-├── logs/                # Experimental results
-├── config.py            # Configuration
-├── run_v0_9.py         # Main experiment runner
-└── utils.py            # Helper functions
+├── rcg_modules/           # Core RCG components
+│   ├── collapse.py       # Weight modification logic
+│   ├── incoherence.py    # Signal detection
+│   ├── model.py          # Model management
+│   └── stress.py         # Stress field system
+├── logs/                 # Experimental results
+├── config.py             # Configuration
+├── run_v0_9.py          # Main experiment runner
+└── utils.py             # Helper functions
 ```
 
-## 📈 Results
+##  Results
 
 Current system achievements:
-- Efficient VRAM management with CPU streaming
-- Parallel processing of stress points
-- Two-tier intervention system
-- Strict conservation guarantees
-- Comprehensive error handling
+- Successfully identifies problematic neural pathways
+- Applies targeted stress to corresponding weights
+- Implements conservation-aware collapse mechanism
+- Maintains model stability during modifications
 
-## 🛠️ Setup
+##  Setup
 
 1. Clone the repository
 2. Install dependencies (requirements.txt coming soon)
 3. Configure HF_HOME_CACHE in config.py
 4. Run experiments with run_v0_9.py
 
-## 💻 System Requirements
-
-- **RAM**: 32 GB recommended
-  - Current implementation requires significant system RAM (approximately 26.6 GB) for the high-precision stress field
-  - Future versions will aim to optimize memory usage through float16 or sparse tensor implementations
-  - Memory usage primarily driven by stress tensor storage in CPU memory to preserve full RCG fidelity
-
-- **GPU**: CUDA-compatible GPU with at least 8GB VRAM
-  - Required for model inference and weight modifications
-  - VRAM usage optimized through smart parameter streaming
-
-- **Storage**: 10 GB minimum
-  - Model weights and cache
-  - Log files and experimental data
-
-## 📝 Logging
+##  Logging
 
 The system generates detailed logs for:
 - Experimental results
-- Collapse and snap events
+- Collapse events
 - Weight modifications
-- Memory usage and transfers
-- Conservation verification
+- Memory usage
 - Performance metrics
 
 Logs are stored in `rcg-neuro/logs/` with timestamped filenames.
 
-## 🎯 Future Development
+##  Future Development
 
 1. Threshold calibration
-2. Fine-tune snap mechanism
+2. Implementation of pruning mechanism
 3. Softmax-based weight system
 4. Enhanced stability measures
 5. Additional performance optimizations
-
-## 📚 References
-
-- RCG Framework Paper (discrete spacetime physics)
-- RCG Universal Theory Paper (optimization principles)
